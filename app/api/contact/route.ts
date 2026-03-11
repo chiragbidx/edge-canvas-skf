@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const { email, message } = data;
 
-    // Basic validation
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       return NextResponse.json({ error: "Invalid email address" }, { status: 400 });
     }
@@ -21,11 +20,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
     }
 
-    // Send email using SendGrid API
-    const sendgridResponse = await fetch("https://api.sendgrid.com/v3/mail/send", {
+    const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${SENDGRID_API_KEY}`,
+        Authorization: `Bearer ${SENDGRID_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -36,8 +34,8 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    if (!sendgridResponse.ok) {
-      const errorText = await sendgridResponse.text();
+    if (!response.ok) {
+      const errorText = await response.text();
       console.error("SendGrid send error:", errorText);
       return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
     }
