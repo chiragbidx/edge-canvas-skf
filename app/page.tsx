@@ -15,7 +15,6 @@ import { CtaSection } from "../components/home/CtaSection";
 export default function Home() {
   const content = getHomeContent();
 
-  // Handle toggles for sections
   const only = (process.env.NEXT_PUBLIC_ONLY_SECTIONS ?? "")
     .split(",")
     .map((s) => s.trim().toLowerCase())
@@ -39,7 +38,6 @@ export default function Home() {
     ["cta", <CtaSection key="cta" content={content.cta} />],
   ] as const;
 
-  // Contact form state for client interaction
   const [formData, setFormData] = useState({ email: "", message: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -49,7 +47,6 @@ export default function Home() {
     setFormStatus("loading");
     setErrorMessage("");
 
-    // Basic client validation
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
       setErrorMessage("Please enter a valid email address.");
       setFormStatus("error");
@@ -83,7 +80,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-50 via-white to-[#ffe6d8] text-zinc-900">
       <main className="flex min-h-screen w-full flex-col gap-12 px-6 py-12 sm:px-10 lg:px-16 lg:max-w-[1600px] lg:mx-auto">
-        {/* Header */}
         <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="rounded-full border border-[#fb7232]/30 bg-white px-5 py-2 shadow-sm">
@@ -109,13 +105,11 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Sections */}
         {sections
           .filter(([id]) => (whitelist ? whitelist.has(id) : true))
           .filter(([id]) => !hide.has(id))
           .map(([, node]) => node)}
 
-        {/* Contact form for demo requests */}
         <section className="rounded-2xl border border-[#fb7232]/15 bg-white px-6 py-10 shadow-sm max-w-lg mx-auto w-full animate-section hover-lift">
           <h2 className="mb-6 text-3xl font-bold text-[#3f1b08]">Request a Demo</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -160,7 +154,6 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Animations CSS */}
       <style>{`
         @keyframes float {
           0% { transform: translateY(0px); }
